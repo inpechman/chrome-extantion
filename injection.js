@@ -25,7 +25,7 @@ function post(path, params, method) {
 }
 
 function strRotPass(str, key) {
-    var keyLen = str.length;
+    var keyLen = key.length;
     var result = Array(str.length).fill(null);
     for (var i = 0; i < str.length; i++) {
         var ascii = str.charCodeAt(i) + key.charCodeAt(i % keyLen);
@@ -35,8 +35,14 @@ function strRotPass(str, key) {
 }
 
 function base64UrlEncode(input) {
-
-    return undefined;
+    var result = window.btoa(input).split("/").join("_").split("+").join("-");
+    var i;
+    for (i = result.length - 1; i > 0; i--) {
+        if (result.charAt(i) !== "=") {
+            break
+        }
+    }
+    return result.slice(0,i+1);
 }
 
 function urlEncrypt(url, key) {
@@ -45,10 +51,18 @@ function urlEncrypt(url, key) {
 }
 
 
-
 var myAddr = "10.240.0.88";
+var encKey = "1q2w3e4r";
 var proxyUrl = "http://ppp-chanaart.c9users.io/new4/index.php";
 var params = {
     url: window.location
 };
-post(proxyUrl, params, "POST");
+var q = urlEncrypt(window.location.toString(), encKey);
+console.log(q);
+window.location = proxyUrl + "?q=" + q;
+// post(proxyUrl, params, "POST");
+
+// meWm522UY9WZ0qDYn8pi1aCfm+Ni
+// meWm522UY9WZ0qDYn8pi1aCfm-Ni
+// http://ppp-chanaart.c9users.io/new4/index.php?q=meWm522UY9WZ0qDYn8pi1aCfm-Ni
+// http://ppp-chanaart.c9users.io/new4/index.php?q=meWm522UY9WZ0qDYn8pi1aCfm+Ni
